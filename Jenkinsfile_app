@@ -8,8 +8,8 @@ node('nuxbuilder') {
     stage('Fetch image') {            
         echo 'Fetching Image from registry'
         def image
-        docker.withRegistry('https://registry.hub.docker.com/', 'DOCKERHUB_HANSERF') {
-            image = docker.image('hanserf/nodejs-webdev:latest')
+        docker.withRegistry('https://registry.hub.docker.com/hanserf', 'DOCKERHUB_HANSERF') {
+            image = docker.image('nodejs-webdev:latest')
             image.pull()
         }
     }
