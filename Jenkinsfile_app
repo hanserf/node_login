@@ -1,21 +1,27 @@
 node('nuxbuilder') {
     def app
+    def repo
     stage('Cloning'){
         checkout scm    
     }
-    stage('Build image') {            
-        echo 'Building Image'
-        app = docker.pull("node")
-    }
-    stage('Test Image'){
-        app.inside {
-            sh 'echo "Tests passed"'
+    repo = scm
+    stage('Fetch image') {            
+        echo 'Fetching Image from registry'
+        def image
+        docker.withRegistry('https://registry.hub.docker.com/', 'DOCKERHUB_HANSERF') {
+            image = docker.image('hanserf/nodejs-webdev:latest')
+            image.pull()
         }
     }
-    stage('Push Image')
-        docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_HANSERF') { 
-            app.push("${env.BUILD_NUMBER}") 
-            app.push("latest")
+    stage('Build code'){
+        image.inside {
+            echo 'Fetching Image from registry'
+            sh '''
+            npm config ls
+            echo $PATH
+            pwd
+            tree .            
+            '''
         }
-        
+    }        
 }
