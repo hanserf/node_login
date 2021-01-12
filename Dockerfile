@@ -23,5 +23,5 @@ RUN \
   mongoose \
   bcrypt \
   ejs
-
+EXPOSE 3000 22
 CMD ["/bin/bash"]

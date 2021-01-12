@@ -1,28 +1,33 @@
-environment {
-    registryCredential = 'MY_DOCKER_TOKEN'
-}
-node('nuxbuilder') {
-    def app
-    def repo
-    stage('Cloning'){
-        checkout scm    
+pipeline {
+    environment {
+        registry = "hanserf/node-webdev"
+        registryCredential = 'DOCKERHUB_HANSERF'
     }
-    repo = scm
-    stage('Fetch image') {            
-        echo 'Fetching Image from registry'
-        def image
-        docker.pull('hanserf/node-webdev:latest')
-        image = docker.build('hanserf/node-webdev:latest')
-    }
-    stage('Build code'){
-        image.inside {
-            echo 'Fetching Image from registry'
-            sh '''
-            npm config ls
-            echo $PATH
-            pwd
-            tree .            
-            '''
+    agent{ 
+        node{
+            label 'nuxbuilder'
         }
-    }        
+    }
+    stages {
+        stage('Cloning Git') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Building image') {
+            steps{
+                script {
+                    def img = docker.build(registry)
+                    img.inside()
+                    echo 'Fetching Image from registry'
+                    sh '''
+                    npm config ls
+                    echo $PATH
+                    pwd
+                    tree .            
+                    '''
+                }
+            }
+        }
+    }
 }
