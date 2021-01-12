@@ -1,14 +1,12 @@
 
 node('nuxbuilder') {
     def app
-    def repo
     stage('Cloning'){
         checkout scm    
     }
     repo = scm
     stage('Fetch image') {            
         echo 'Fetching Image from registry'
-        def app
         app = docker.build("hanserf/node-webdev")
         
     }
