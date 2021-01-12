@@ -8,12 +8,12 @@ node('nuxbuilder') {
     repo = scm
     stage('Fetch image') {            
         echo 'Fetching Image from registry'
-        def image
-        image = docker.build("hanserf/node-webdev")
+        def app
+        app = docker.build("hanserf/node-webdev")
         
     }
     stage('Test Image'){
-        image.inside {
+        app.inside {
             sh 'echo $PATH'
             sh 'cd /opt/node_app'
             sh 'nodejs app'
