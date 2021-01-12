@@ -1,5 +1,4 @@
 environment {
-    registry = 'hanserf/node-webdev:latest'
     registryCredential = 'MY_DOCKER_TOKEN'
 }
 node('nuxbuilder') {
@@ -12,8 +11,8 @@ node('nuxbuilder') {
     stage('Fetch image') {            
         echo 'Fetching Image from registry'
         def image
-        docker.pull(registry)
-        image = docker.build(registry)
+        docker.pull('hanserf/node-webdev:latest')
+        image = docker.build('hanserf/node-webdev:latest')
     }
     stage('Build code'){
         image.inside {
