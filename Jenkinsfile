@@ -12,15 +12,11 @@ node('nuxbuilder') {
         image = docker.build("hanserf/node-webdev")
         
     }
-    stage('Build code'){
+    stage('Test Image'){
         image.inside {
-            echo 'Fetching Image from registry'
-            sh '''
-            npm config ls
-            echo $PATH
-            pwd
-            tree .            
-            '''
+            sh 'echo $PATH'
+            sh 'cd /opt/node_app'
+            sh 'nodejs app'
         }
     }        
 }
