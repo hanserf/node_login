@@ -1,27 +1,5 @@
-FROM node:15.5.1-buster
-
-LABEL \
-  node.version=15.5.1 \
-  debian.version=buster
-
-WORKDIR /opt/node_app
-
-RUN \
-  apt-get update && \
-  apt-get install -y \
-  wget \
-  unzip \
-  tar \
-  make \
-  tree && \
-  npm i express \
-  express-session \
-  express-ejs-layouts \
-  connect-flash \
-  passport \
-  passport-local \
-  mongoose \
-  bcrypt \
-  ejs
-EXPOSE 3000 22
-CMD ["/bin/bash"]
+FROM hanserf/node-webdev:latest
+WORKDIR /usr/src/app
+COPY . .
+EXPOSE 3000
+CMD ["nodejs", "app"]
