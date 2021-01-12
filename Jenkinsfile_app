@@ -1,4 +1,8 @@
 node('nuxbuilder') {
+    environment {
+        registry = 'hanserf/nodejs-webdev:latest'
+        registryCredential = 'MY_DOCKER_TOKEN'
+    }
     def app
     def repo
     stage('Cloning'){
@@ -8,10 +12,7 @@ node('nuxbuilder') {
     stage('Fetch image') {            
         echo 'Fetching Image from registry'
         def image
-        docker.withRegistry('https://registry.hub.docker.com/hanserf', 'MY_DOCKER_TOKEN') {
-            image = docker.image('nodejs-webdev:latest')
-            image.pull()
-        }
+        image = docker.build registry + ":$BUILD_NUMBER"
     }
     stage('Build code'){
         image.inside {
