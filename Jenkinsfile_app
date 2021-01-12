@@ -1,8 +1,8 @@
+environment {
+    registry = 'hanserf/node-webdev:latest'
+    registryCredential = 'MY_DOCKER_TOKEN'
+}
 node('nuxbuilder') {
-    environment {
-        registry = 'hanserf/nodejs-webdev:latest'
-        registryCredential = 'MY_DOCKER_TOKEN'
-    }
     def app
     def repo
     stage('Cloning'){
@@ -12,6 +12,7 @@ node('nuxbuilder') {
     stage('Fetch image') {            
         echo 'Fetching Image from registry'
         def image
+        docker.pull(registry)
         image = docker.build(registry)
     }
     stage('Build code'){
