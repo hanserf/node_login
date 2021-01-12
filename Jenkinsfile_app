@@ -16,7 +16,7 @@ pipeline {
         stage('Building image') {
             steps{
                 script {
-                    def img = docker.build("hanserf/node-webdev")
+                    def img = docker.pull("hanserf/node-webdev")
                     img.inside()
                     echo 'Fetching Image from registry'
                     sh '''
