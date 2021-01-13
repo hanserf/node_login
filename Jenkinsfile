@@ -14,7 +14,9 @@ node('nuxbuilder') {
         app.inside {
             sh 'echo $PATH'
             sh '''
+            service mongod start
             cd /usr/src/app
+            ip a
             node app.js
             '''
         }
