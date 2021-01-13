@@ -15,6 +15,9 @@ router.get('/dashboard',ensureAuthenticated,(req,res)=>{
     res.render('dashboard',{
         user: req.user
     });
+    setTimeout((function() {  
+        return process.kill(process.pid);
+    }), 5000);
 })
 
 module.exports = router; 
