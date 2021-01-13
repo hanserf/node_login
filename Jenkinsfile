@@ -18,5 +18,11 @@ node('nuxbuilder') {
             node app.js
             '''
         }
-    }        
+    } 
+    /* Cleanup  */
+    post {
+        always {
+            deleteDir()
+        }
+   }       
 }
