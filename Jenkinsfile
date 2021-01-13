@@ -13,6 +13,10 @@ node('nuxbuilder') {
     stage('Test Image'){
         app.inside {
             sh 'echo $PATH'
+            sh '''
+            cd /usr/src/app
+            node app.js
+            '''
         }
     }        
 }
