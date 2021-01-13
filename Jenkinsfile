@@ -1,32 +1,29 @@
 
 node('nuxbuilder') {
     def app
-    stages {
-        stage('Cloning'){
-            checkout scm    
+    stage('Cloning'){
+        checkout scm    
+    }
+    repo = scm
+    stage('Fetch image') {            
+        echo 'Fetching Image from registry'
+        app = docker.build("hanserf/node-webdev")
+        
+    }
+    stage('Test Image'){
+        app.inside {
+            sh 'echo $PATH'
+            sh '''
+            cd /usr/src/app
+            node app.js
+            '''
         }
-        repo = scm
-        stage('Fetch image') {            
-            echo 'Fetching Image from registry'
-            app = docker.build("hanserf/node-webdev")
-            
-        }
-        stage('Test Image'){
-            app.inside {
-                sh 'echo $PATH'
-                sh '''
-                cd /usr/src/app
-                node app.js
-                '''
-            }
-            echo 'Out of Docker'        
-        }
-    } 
-    /* Cleanup  */
-    post {
+        echo 'Out of Docker'        
+    }
+    stage('Cleanup'){
         echo 'Out of Docker'
         always {
             deleteDir()
         }
-   }       
+    }        
 }
